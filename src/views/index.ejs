@@ -27,9 +27,9 @@
     </div>
     <nav class="collapse navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
-        <%for(let i=0;i<nav.length;i++){%>
+        <%for(let i=0;i<data.nav.length;i++){%>
         <li>
-          <a href="/<%=nav[i].link%>"><%=nav[i].title%></a>
+          <a href="/<%=data.nav[i].link%>"><%=data.nav[i].title%></a>
         </li>
        <%}%>
       </ul>

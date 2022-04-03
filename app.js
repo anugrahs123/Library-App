@@ -1,35 +1,8 @@
 const express=require("express");
 //init express
 const app=new express();
-
-const nav=[
-    {
-        link:'books',
-        title:'Books'
-    },
-    {
-        link:'authors',
-        title:'Authors'
-    },
-    {
-        link:'login',
-        title:'Login'
-    },
-    {
-        link:'signup',
-        title:'Signup'
-    },
-    {
-        link:'addbook',
-        title:'Add-Book'
-    }
-    
-    
-    
-    
-    
-]
-const data=[
+const data={
+    book:[
     {
         name:"Tom & Jerry",
         author:"Joseph Barbera",
@@ -45,11 +18,33 @@ const data=[
         author:"Basheer",
         img:"profile.png"
     }
-    ]
+] ,
+nav:[
+        {
+            link:'books',
+            title:'Books'
+        },
+        {
+            link:'authors',
+            title:'Authors'
+        },
+        {
+            link:'login',
+            title:'Login'
+        },
+        {
+            link:'signup',
+            title:'Signup'
+        },
+        {
+            link:'addbook',
+            title:'Add-Book'
+        }
+    ]}
 
 
-const booksRouter=require('./src/routes/booksRoutes')(nav);
-const authorRouter=require('./src/routes/authorRoutes')(nav);
+const booksRouter=require('./src/routes/booksRoutes')(data);
+const authorRouter=require('./src/routes/authorRoutes')(data);
 app.use(express.static('./public'))
 app.use("/books",booksRouter);
 app.use("/authors",authorRouter);
@@ -59,19 +54,19 @@ app.set('views','./src/views')
 
 //create route handler
 app.get("/",(req,res)=>{
-    res.render("index",{nav,books:['name1','name2'],title:'new title'});
+    res.render("index",{data,books:['name1','name2'],title:'new title'});
 
 });
 app.get("/login",(req,res)=>{
-    res.render("login",{nav});
+    res.render("login",{data});
 
 });
 app.get("/signup",(req,res)=>{
-    res.render("signup",{nav});
+    res.render("signup",{data});
 
 });
 app.get("/addbook",(req,res)=>{
-    res.render("addbook",{nav});
+    res.render("addbook",{data});
 
 });
 
