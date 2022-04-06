@@ -6,16 +6,19 @@ const data={
     {
         name:"Tom & Jerry",
         author:"Joseph Barbera",
+        type:"comedy",
         img:"slide1.jpg"
     },
     {
         name:"Harry Potter",
         author:"J K rowling",
+        type:"fantasy",
         img:"signup.png"
     },
     {
         name:"Pattumayude aadu",
         author:"Basheer",
+        type:"novel",
         img:"profile.png"
     }
 ] ,
@@ -45,6 +48,7 @@ nav:[
 
 const booksRouter=require('./src/routes/booksRoutes')(data);
 const authorRouter=require('./src/routes/authorRoutes')(data);
+const bookdata=require('./config/connection');
 app.use(express.static('./public'))
 app.use("/books",booksRouter);
 app.use("/authors",authorRouter);
@@ -67,6 +71,19 @@ app.get("/signup",(req,res)=>{
 });
 app.get("/addbook",(req,res)=>{
     res.render("addbook",{data});
+
+});
+app.get("/addbook/add",(req,res)=>{
+    let item={
+        BookName:req.query.BookName,
+        AuthorName:req.query.AuthorName,
+        BookType:req.query.BookType,
+        Image:req.query.Image
+    }
+    console.log(item);
+   var book= bookdata(item);
+    book.save();
+    res.redirect('/books')
 
 });
 

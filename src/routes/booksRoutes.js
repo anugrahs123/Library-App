@@ -1,10 +1,15 @@
 const express=require('express');
 const router=express.Router();
+const BookData=require('./../../config/connection');
 const print=(data)=>{
 
 
 router.get("/",(req,res)=>{
-    res.render("books",{data});
+    BookData.find()
+    .then((books)=>{
+
+        res.render("books",{data,books});
+    })
 })
 router.get("/:id",(req,res)=>{
     id=req.params.id;
