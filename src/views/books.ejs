@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>Books</title>
+		<title>Library-App</title>
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -101,7 +101,7 @@
               <div class="row">
                 <div class="col-xs-9">
                   <h4><span class="label label-default"><%=books[i].AuthorName%></span></h4><h4>
-                  <small style="font-family:courier,'new courier';" class="text-muted"><%=books[i].BookType%><a href="/books/<%=i%>" class="text-muted">Read More</a></small>
+                  <small style="font-family:courier,'new courier';" class="text-muted"><%=books[i].BookType%>   <br><a href="/books/<%=books[i]._id%>" class="text-muted">Read More</a></small>
                   </h4></div>
                 <div class="col-xs-3"></div>
               </div>

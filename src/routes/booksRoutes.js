@@ -11,9 +11,23 @@ router.get("/",(req,res)=>{
         res.render("books",{data,books});
     })
 })
+router.get("/year",(req,res)=>{
+    BookData.find({BookYear:{$gt:2000}})
+    .then((e)=>{
+        res.send("year");
+        console.log(e);
+
+    })
+    
+
+})
 router.get("/:id",(req,res)=>{
     id=req.params.id;
-    res.render("book",{data,id})
+    BookData.findOne({_id:id})
+    .then((book)=>{
+
+        res.render("book",{data,id,book})
+    })
 })
 return router;
 

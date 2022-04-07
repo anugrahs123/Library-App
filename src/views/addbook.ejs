@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>Books</title>
+		<title>Library-App</title>
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -93,19 +93,23 @@
           <form method="GET" action="/addbook/add">
             <div class="mb-2">
               <label for="exampleBookName" class="form-label">Book Name</label>
-              <input type="text" class="form-control" id="exampleBookName" name="BookName" aria-describedby="emailHelp">
+              <input type="text" class="form-control" id="exampleBookName" name="BookName" aria-describedby="emailHelp" required>
             </div>
             <div class="mb-3">
               <label for="exampleAuthorName" class="form-label">Author Name</label>
-              <input type="text" class="form-control" id="exampleAuthorName" name="AuthorName">
+              <input type="text" class="form-control" id="exampleAuthorName" name="AuthorName" required>
             </div>
             <div class="mb-3">
                 <label for="exampleBookType" class="form-label">Book Type</label>
-                <input type="text" class="form-control" id="exampleBookType" name="BookType">
+                <input type="text" class="form-control" id="exampleBookType" name="BookType" required>
+              </div>
+              <div class="mb-3">
+                <label for="exampleBookYear" class="form-label">Book Year</label>
+                <input type="number" class="form-control" id="exampleBookYear" name="BookYear" required>
               </div>
               <div class="mb-3">
                 <label for="exampleImage" class="form-label">Image</label>
-                <input type="file" class="form-control" id="exampleImage" name="Image">
+                <input type="file" class="form-control" id="exampleImage" name="Image" required>
               </div>
             <br>
             <button type="submit" class="btn btn-primary">Submit</button>
