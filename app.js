@@ -36,13 +36,21 @@ nav:[
         {
             link:'addbook',
             title:'Add-Book'
+        },
+       
+      
+        {
+            link:'addauthor',
+            title:'Add-Author'
         }
     ]}
 
 
 const booksRouter=require('./src/routes/booksRoutes')(data);
 const authorRouter=require('./src/routes/authorRoutes')(data);
-const bookdata=require('./config/connection');
+// const bookdata=require('./config/connection');
+// const authordata=require('./config/connection2');
+const data1=require('./config/connection2')
 // const LogIn=require('./config/connection');
 // const data1=require('./config/connection');
 // let bookdata1=data1.bookdata;
@@ -50,6 +58,7 @@ const bookdata=require('./config/connection');
 app.use(express.static('./public'))
 app.use("/books",booksRouter);
 app.use("/authors",authorRouter);
+app.use(express.urlencoded({ extended: true })) ;
 // app.METHOD(PATH,HANDLER); 
 app.set('view engine','ejs');
 app.set('views','./src/views')
@@ -59,28 +68,61 @@ app.get("/",(req,res)=>{
     res.render("index",{data,books:['name1','name2'],title:'new title'});
 
 });
-app.get("/login",(req,res)=>{
+app.get('/login',(req,res)=>{
     res.render("login",{data});
+})
+app.post("/login/add",(req,res)=>{
+    let m=req.body.email;
+    data1.Userdata.find()
+    .then((e)=>{
+        for(let i=0;i<e.length;i++){
+        if(m===e[i].Email){
 
-});
-app.get("/login/add",(req,res)=>{
+        res.redirect('/')
+        }
+        else{
+            res.json({message:"not a user"})
 
-   let log={
-       email:req.query.email,
-       pass:req.query.password
-   }
-   let log2=LogIn(log);
-   log2.save();
-   console.log(log2);
-   res.redirect('/')
+        }
+        // res.send('we');
+        console.log(e);
+        console.log(req.body.email);
+    }
+        
+    })
 
 });
 app.get("/signup",(req,res)=>{
     res.render("signup",{data});
 
 });
+app.post("/signup/get",(req,res)=>{
+    if(!req.body.email||!req.body.zip||!req.body.password){
+        res.json({message:"all fields are required"})
+      }else{
+
+   let log={
+       Email:req.body.email,
+       Password:req.body.password,
+       Address:req.body.address,
+       Address2:req.body.address2,
+       City:req.body.city,
+       State:req.body.state,
+       Zip:req.body.zip
+   }
+   let log2=data1.Userdata(log);
+   log2.save();
+   console.log(log2);
+   res.redirect('/login')
+}
+
+});
 app.get("/addbook",(req,res)=>{
     res.render("addbook",{data});
+
+});
+app.get("/addauthor",(req,res)=>{
+    res.render("addauthor",{data});
 
 });
 
@@ -93,11 +135,26 @@ app.get("/addbook/add",(req,res)=>{
         Image:req.query.Image
     }
     console.log(item);
-   var book= bookdata(item);
+   var book= data1.bookdata(item);
     book.save();
     res.redirect('/books')
 
 });
+
+app.post("/addbook/addauthor",(req,res)=>{
+    let item={
+        AuthorName:req.body.AuthorName,
+        AuthorType:req.body.AuthorType,
+        AuthorImage:req.body.AuthorImage
+    }
+    console.log(item);
+   var author= data1.authordata(item);
+    author.save();
+    console.log(item);
+    res.redirect('/books')
+
+});
+
 
 
 //listen on a port
