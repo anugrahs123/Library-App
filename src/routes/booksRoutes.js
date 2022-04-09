@@ -1,6 +1,8 @@
 const express=require('express');
 const router=express.Router();
 const BookData=require('./../../config/connection');
+// const data1=require('./../../config/connection');
+// let BookData=data1.bookdata;
 const print=(data)=>{
 
 

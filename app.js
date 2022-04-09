@@ -43,7 +43,10 @@ nav:[
 const booksRouter=require('./src/routes/booksRoutes')(data);
 const authorRouter=require('./src/routes/authorRoutes')(data);
 const bookdata=require('./config/connection');
-const LogIn=require('./config/connection');
+// const LogIn=require('./config/connection');
+// const data1=require('./config/connection');
+// let bookdata1=data1.bookdata;
+// let LogIn=data1.LogIn;
 app.use(express.static('./public'))
 app.use("/books",booksRouter);
 app.use("/authors",authorRouter);
@@ -69,7 +72,7 @@ app.get("/login/add",(req,res)=>{
    let log2=LogIn(log);
    log2.save();
    console.log(log2);
-   res.redirect('/books')
+   res.redirect('/')
 
 });
 app.get("/signup",(req,res)=>{
