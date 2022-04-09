@@ -26,13 +26,7 @@
       <a href="/" class="navbar-brand">Home</a>
     </div>
     <nav class="collapse navbar-collapse" role="navigation">
-      <ul class="nav navbar-nav">
-        <%for(let i=0;i<data.nav.length;i++){%>
-          <li>
-            <a href="/<%=data.nav[i].link%>"><%=data.nav[i].title%></a>
-          </li>
-      <%}%>
-      </ul>
+      
       <ul class="nav navbar-right navbar-nav">
         <li class="dropdown">
        <a href="/signup">SignUp</a>
@@ -96,8 +90,7 @@
               <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
             </div>
             <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Check me out</label>
+              <label class="form-check-label" for="exampleCheck1"></label>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>

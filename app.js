@@ -42,6 +42,10 @@ nav:[
         {
             link:'addauthor',
             title:'Add-Author'
+        },
+        {
+            link:'logout',
+            title:'Logout'
         }
     ]}
 
@@ -65,23 +69,28 @@ app.set('views','./src/views')
 
 //create route handler
 app.get("/",(req,res)=>{
-    res.render("index",{data,books:['name1','name2'],title:'new title'});
+    res.render("index",{books:['name1','name2'],title:'new title'});
 
 });
 app.get('/login',(req,res)=>{
-    res.render("login",{data});
+    res.render("login");
+})
+app.get('/logout',(req,res)=>{
+    res.redirect("/login");
 })
 app.post("/login/add",(req,res)=>{
     let m=req.body.email;
+    let n=req.body.password;
     data1.Userdata.find()
     .then((e)=>{
         for(let i=0;i<e.length;i++){
-        if(m===e[i].Email){
+        if(m===e[i].Email && n===e[i].Password){
 
-        res.redirect('/')
+        res.redirect('/books')
         }
         else{
-            res.json({message:"not a user"})
+          
+            res.redirect('/login')
 
         }
         // res.send('we');
@@ -93,7 +102,7 @@ app.post("/login/add",(req,res)=>{
 
 });
 app.get("/signup",(req,res)=>{
-    res.render("signup",{data});
+    res.render("signup");
 
 });
 app.post("/signup/get",(req,res)=>{
@@ -119,6 +128,36 @@ app.post("/signup/get",(req,res)=>{
 });
 app.get("/addbook",(req,res)=>{
     res.render("addbook",{data});
+
+});
+app.get("/editbook",(req,res)=>{
+    res.render("editbook",{data});
+
+});
+app.post("/editbook/add",(req,res)=>{
+    let item={
+        BookName:req.body.BookName,
+        AuthorName:req.body.AuthorName,
+        BookType:req.body.BookType,
+        BookYear:req.body.BookYear,
+        Image:req.body.Image
+    }
+
+    data1.bookdata.updateOne({BookName:item.BookName},
+        { $set:{
+            BookName:req.body.BookName,
+            AuthorName:req.body.AuthorName,
+            BookType:req.body.BookType,
+            BookYear:req.body.BookYear,
+            Image:req.body.Image
+            
+             }} )
+    .then((e)=>{
+        console.log(e);
+        
+        res.redirect('/books');
+        console.log(item);
+    })
 
 });
 app.get("/addauthor",(req,res)=>{

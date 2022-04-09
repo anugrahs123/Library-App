@@ -23,7 +23,6 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a href="/" class="navbar-brand">Home</a>
     </div>
     <nav class="collapse navbar-collapse" role="navigation">
       <%for(let i=0;i<data.nav.length;i++){%>
@@ -102,7 +101,8 @@
                 <div class="col-xs-9">
                   <h4><span class="label label-default"><%=books[i].AuthorName%></span></h4><h4>
                   <small style="font-family:courier,'new courier';" class="text-muted"><%=books[i].BookType%>   <br><a href="/books/<%=books[i]._id%>" class="text-muted">Read More</a></small>
-                  </h4></div>
+                  </h4>
+                </div>
                 <div class="col-xs-3"></div>
               </div>
               <br><br>
