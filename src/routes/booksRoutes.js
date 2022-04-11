@@ -1,20 +1,21 @@
 const express=require('express');
 const router=express.Router();
-const BookData=require('./../../config/connection2');
+const db=require('./../../config/connection2');
+const booksHelper=require('./../helper/bookHelper');
 // const data1=require('./../../config/connection');
 // let BookData=data1.bookdata;
 const print=(data)=>{
 
 
 router.get("/",(req,res)=>{
-    BookData.bookdata.find()
+    db.bookdata.find()
     .then((books)=>{
 
         res.render("books",{data,books});
     })
 })
 router.get("/year",(req,res)=>{
-    BookData.bookdata.find({BookYear:{$gt:2000}})
+    db.bookdata.find({BookYear:{$gt:2000}})
     .then((e)=>{
         res.send("year");
         console.log(e);
@@ -25,7 +26,7 @@ router.get("/year",(req,res)=>{
 })
 router.get("/:id",(req,res)=>{
     id=req.params.id;
-    BookData.bookdata.findOne({_id:id})
+    db.bookdata.findOne({_id:id})
     .then((book)=>{
 
         res.render("book",{data,id,book})

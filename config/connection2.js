@@ -34,10 +34,10 @@ const UserSchema=new Schema({
 });
 
 
-let data= {
+let db= {
     authordata:mongoose.model('AuthorData',AuthorSchema),
     bookdata:mongoose.model('BookData',BookSchema),
     Userdata:mongoose.model('UserData',UserSchema)
 
 }
-module.exports=data;
+module.exports=db;

@@ -55,7 +55,7 @@ const authorRouter=require('./src/routes/authorRoutes')(data);
 const sighupRouter=require('./src/routes/signupRoutes');
 // const bookdata=require('./config/connection');
 // const authordata=require('./config/connection2');
-const data1=require('./config/connection2')
+const db=require('./config/connection2')
 // const LogIn=require('./config/connection');
 // const data1=require('./config/connection');
 // let bookdata1=data1.bookdata;
@@ -83,7 +83,7 @@ app.get('/logout',(req,res)=>{
 app.post("/login/add",(req,res)=>{
     let m=req.body.email;
     let n=req.body.password;
-    data1.Userdata.find()
+    db.Userdata.find()
     .then((e)=>{
         for(let i=0;i<e.length;i++){
         if(m===e[i].Email && n===e[i].Password){
@@ -122,7 +122,7 @@ app.post("/editbook/add",(req,res)=>{
         Image:req.body.Image
     }
 
-    data1.bookdata.updateOne({BookName:item.BookName},
+    db.bookdata.updateOne({BookName:item.BookName},
         { $set:{
             BookName:req.body.BookName,
             AuthorName:req.body.AuthorName,
@@ -153,7 +153,7 @@ app.get("/addbook/add",(req,res)=>{
         Image:req.query.Image
     }
     console.log(item);
-   var book= data1.bookdata(item);
+   var book= db.bookdata(item);
     book.save();
     res.redirect('/books')
 
@@ -166,7 +166,7 @@ app.post("/addbook/addauthor",(req,res)=>{
         AuthorImage:req.body.AuthorImage
     }
     console.log(item);
-   var author= data1.authordata(item);
+   var author= db.authordata(item);
     author.save();
     console.log(item);
     res.redirect('/books')

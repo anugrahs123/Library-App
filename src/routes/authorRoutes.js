@@ -5,7 +5,7 @@ const print=(data)=>{
 
     
 router.get("/",(req,res)=>{
-  BookData.bookdata.find()
+  BookData.authordata.find()
   .then((authors)=>{
     res.render("authors",{data,authors})
 
@@ -14,7 +14,7 @@ router.get("/",(req,res)=>{
 })
 router.get("/:id",(req,res)=>{
   id=req.params.id;
-  BookData.bookdata.findOne({_id:id})
+  BookData.authordata.findOne({_id:id})
   .then((author)=>{
 
     res.render("author",{id,data,author})
