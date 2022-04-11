@@ -1,4 +1,5 @@
 const express=require('express');
+const req = require('express/lib/request');
 const router=express.Router();
 const db=require('./../../config/connection2');
 const booksHelper=require('./../helper/bookHelper');
@@ -10,8 +11,12 @@ const print=(data)=>{
 router.get("/",(req,res)=>{
     db.bookdata.find()
     .then((books)=>{
+        db.authordata.find()
+        .then((authors)=>{
 
-        res.render("books",{data,books});
+            res.render("books",{data,books,authors});
+        })
+
     })
 })
 router.get("/year",(req,res)=>{
@@ -23,6 +28,12 @@ router.get("/year",(req,res)=>{
     })
     
 
+})
+router.get('/authorbook/:name',(req,res)=>{
+    name=req.params.name;
+    db.bookdata.find({AuthorName:name}).then((books)=>{
+        res.render("books",{books,data})
+    })
 })
 router.get("/:id",(req,res)=>{
     id=req.params.id;

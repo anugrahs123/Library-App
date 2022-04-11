@@ -84,9 +84,9 @@ app.post("/login/add",(req,res)=>{
     let m=req.body.email;
     let n=req.body.password;
     db.Userdata.find()
-    .then((e)=>{
-        for(let i=0;i<e.length;i++){
-        if(m===e[i].Email && n===e[i].Password){
+    .then((user)=>{
+        for(let i=0;i<user.length;i++){
+        if(m===user[i].Email && n===user[i].Password){
             res.redirect('/books')
             // res.json({message:"okay"})
         }
