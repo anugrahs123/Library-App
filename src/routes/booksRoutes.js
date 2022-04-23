@@ -6,7 +6,14 @@ const booksHelper=require('./../helper/bookHelper');
 // const data1=require('./../../config/connection');
 // let BookData=data1.bookdata;
 const print=(data)=>{
-
+    // const isAuth=(req,res,next)=>{
+    //     if(req.session.isAuth){
+    //         next()
+    //     }
+    //     else{
+    //         res.redirect("/signup")
+    //     }
+    // }
 
 router.get("/",(req,res)=>{
     db.bookdata.find()

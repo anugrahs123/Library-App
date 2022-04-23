@@ -49,14 +49,29 @@ nav:[
             title:'Logout'
         }
     ]}
-
-
+    const isAuth=(req,res,next)=>{
+        if(req.session.isAuth){
+            next()
+        }
+        else{
+            res.redirect("/signup")
+        }
+    }
+const session=require('express-session')
 const booksRouter=require('./src/routes/booksRoutes')(data);
 const authorRouter=require('./src/routes/authorRoutes')(data);
 const sighupRouter=require('./src/routes/signupRoutes');
 // const bookdata=require('./config/connection');
 // const authordata=require('./config/connection2');
-const db=require('./config/connection2')
+const db=require('./config/connection2');
+const req = require("express/lib/request");
+const mongoDBSession=require('connect-mongodb-session')(session)
+
+const store=new mongoDBSession({
+    uri:db.data,
+    collection:"mySession"
+
+})
 // const LogIn=require('./config/connection');
 // const data1=require('./config/connection');
 // let bookdata1=data1.bookdata;
@@ -66,6 +81,14 @@ app.use("/books",booksRouter);
 app.use("/authors",authorRouter);
 app.use("/signup",sighupRouter);
 app.use(express.urlencoded({ extended: true })) ;
+app.use(session({
+    secret:"key",
+    resave:false,
+    saveUninitialized:false,
+    store:store
+
+}))
+
 // app.METHOD(PATH,HANDLER); 
 app.set('view engine','ejs');
 app.set('views','./src/views')
@@ -79,7 +102,13 @@ app.get('/login',(req,res)=>{
     res.render("login");
 })
 app.get('/logout',(req,res)=>{
-    res.redirect("/login");
+    req.session.destroy((err)=>{
+        if(err){
+            throw err
+        }
+
+        res.redirect("/login");
+    })
 })
 app.post("/login/add",(req,res)=>{
     let m=req.body.email;
@@ -95,6 +124,7 @@ app.post("/login/add",(req,res)=>{
                 if(data){
 
                     if(m===user[i].Email ){
+                        req.session.isAuth=true
                         res.redirect('/books')
                         // res.json({message:"okay"})
                     }
@@ -121,11 +151,11 @@ app.post("/login/add",(req,res)=>{
 
 });
 
-app.get("/addbook",(req,res)=>{
+app.get("/addbook",isAuth,(req,res)=>{
     res.render("addbook",{data});
 
 });
-app.get("/editbook",(req,res)=>{
+app.get("/editbook",isAuth,(req,res)=>{
     res.render("editbook",{data});
 
 });

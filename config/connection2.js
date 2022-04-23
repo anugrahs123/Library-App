@@ -1,8 +1,9 @@
 // const mongoClient=require('mongodb').mongoClient;
 const mongoose=require("mongoose");
+const url="mongodb+srv://libraryapp:libraryapp@clusterlibrary.5fslb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 // mongoose.connect("mongodb://localhost:27017/LibraryApp");
-mongoose.connect("mongodb+srv://libraryapp:libraryapp@clusterlibrary.5fslb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
-
+//mongoose.connect("mongodb+srv://libraryapp:libraryapp@clusterlibrary.5fslb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+mongoose.connect(url);
 const Schema=mongoose.Schema;
 
 
@@ -34,7 +35,9 @@ const UserSchema=new Schema({
 });
 
 
+
 let db= {
+    data:url,
     authordata:mongoose.model('AuthorData',AuthorSchema),
     bookdata:mongoose.model('BookData',BookSchema),
     Userdata:mongoose.model('UserData',UserSchema)
