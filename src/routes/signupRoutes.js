@@ -16,10 +16,9 @@ router.post("/get",async(req,res)=>{
       }
       else{
           try{
-              let salt=bcrypt.genSalt()
 
     
-              let hashPassword=await bcrypt.hash(req.body.password,salt)
+              let hashPassword=await bcrypt.hash(req.body.password,10)
           
 
    let log={
