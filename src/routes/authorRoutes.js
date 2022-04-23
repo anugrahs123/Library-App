@@ -16,6 +16,7 @@ router.get("/:id",(req,res)=>{
   id=req.params.id;
   BookData.authordata.findOne({_id:id})
   .then((author)=>{
+    console.log("person",author);
 
     res.render("author",{id,data,author})
   })

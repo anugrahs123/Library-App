@@ -92,6 +92,10 @@
           <!--/stories-->
           <form method="POST" action="/editbook/add">
             <div class="mb-2">
+              <label for="exampleBookName" class="form-label">Book ID</label>
+              <input type="text" class="form-control" id="exampleBookID" value="<%=id%>" name="BookID" aria-describedby="emailHelp" required>
+            </div>
+            <div class="mb-2">
               <label for="exampleBookName" class="form-label">Book Name</label>
               <input type="text" class="form-control" id="exampleBookName" name="BookName" aria-describedby="emailHelp" required>
             </div>

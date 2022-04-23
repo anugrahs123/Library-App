@@ -11,6 +11,7 @@ const print=(data)=>{
 router.get("/",(req,res)=>{
     db.bookdata.find()
     .then((books)=>{
+        console.log("BK",books);
         db.authordata.find()
         .then((authors)=>{
 
@@ -43,6 +44,21 @@ router.get("/:id",(req,res)=>{
         res.render("book",{data,id,book})
     })
 })
+router.get("/dlt/:id",(req,res)=>{
+        id=req.params.id;
+        db.bookdata.deleteOne({_id:id})
+        .then((book)=>{
+    
+        res.redirect("/books")
+    })
+})
+router.get("/edit/:id",(req,res)=>{
+    id=req.params.id;
+    
+
+    res.render("editbook",{id,data})
+})
+
 return router;
 
 

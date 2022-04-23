@@ -99,9 +99,11 @@
               <h3><%=books[i].BookName%></h3>
               <div class="row">
                 <div class="col-xs-9">
-                  <h4><span class="label label-default"><%=books[i].AuthorName%></span></h4><h4>
+                  <h4><span class="label label-default"><a href="#"><%=books[i].AuthorName%></a></span></h4><h4>
                   <small style="font-family:courier,'new courier';" class="text-muted"><%=books[i].BookType%>   <br><a href="/books/<%=books[i]._id%>" class="text-muted">Read More</a></small>
                   </h4>
+                  <h5><a style="color: red;" href="/books/dlt/<%=books[i]._id%>"> Delete</a>||<a style="color: blue;" href="/books/edit/<%=books[i]._id%>"> Edit</a></h5>
+
                 </div>
                 <div class="col-xs-3"></div>
               </div>

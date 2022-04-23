@@ -1,6 +1,7 @@
 const express= require('express');
 const router=express.Router();
 const data1=require('./../../config/connection2')
+const bcrypt=require('bcrypt')
 
 router.use(express.urlencoded({ extended: true })) ;
 
@@ -8,15 +9,22 @@ router.get("/",(req,res)=>{
     res.render("signup");
 
 });
-router.post("/get",(req,res)=>{
+router.post("/get",async(req,res)=>{
     if(!req.body.email||!req.body.zip||!req.body.password){
         res.json({message:"all fields are required"})
         // req.redirect('/signup')
-      }else{
+      }
+      else{
+          try{
+              let salt=bcrypt.genSalt()
+
+    
+              let hashPassword=await bcrypt.hash(req.body.password,salt)
+          
 
    let log={
        Email:req.body.email,
-       Password:req.body.password,
+       Password:hashPassword,
        Address:req.body.address,
        Address2:req.body.address2,
        City:req.body.city,
@@ -27,6 +35,10 @@ router.post("/get",(req,res)=>{
    log2.save();
    console.log(log2);
    res.redirect('/login')
+}
+catch{
+
+}
 }
 
 });

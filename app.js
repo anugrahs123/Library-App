@@ -1,4 +1,5 @@
 const express=require("express");
+const bcrypt=require('bcrypt')
 //init express
 const app=new express();
 const data={
@@ -85,19 +86,34 @@ app.post("/login/add",(req,res)=>{
     let n=req.body.password;
     db.Userdata.find()
     .then((user)=>{
+        console.log(user);
         for(let i=0;i<user.length;i++){
-        if(m===user[i].Email && n===user[i].Password){
-            res.redirect('/books')
-            // res.json({message:"okay"})
-        }
-        // else{
-          
-        //     res.redirect('/login')
-        //     // res.json({message:"not okay"})
+            console.log(n);
+            
+            console.log("oka",user[i].Password);
+            bcrypt.compare(n,user[i].Password,(err,data)=>{
+                if(data){
 
-        // }
+                    if(m===user[i].Email ){
+                        res.redirect('/books')
+                        // res.json({message:"okay"})
+                    }
+               
+                    else{
+                        console.log("else");
+                      
+                        // res.redirect('/login')
+                        // res.json({message:"not okay"})
+            
+                    }
+                }
+                else{
+                    console.log("else else");
+                }
+
+            })
         // res.send('we');
-        console.log(e);
+        //console.log(e);
         console.log(req.body.email);
     }
         
@@ -114,6 +130,7 @@ app.get("/editbook",(req,res)=>{
 
 });
 app.post("/editbook/add",(req,res)=>{
+    const BookID=req.body.BookID;
     let item={
         BookName:req.body.BookName,
         AuthorName:req.body.AuthorName,
@@ -122,7 +139,7 @@ app.post("/editbook/add",(req,res)=>{
         Image:req.body.Image
     }
 
-    db.bookdata.updateOne({BookName:item.BookName},
+    db.bookdata.updateOne({_id:BookID},
         { $set:{
             BookName:req.body.BookName,
             AuthorName:req.body.AuthorName,
