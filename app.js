@@ -1,3 +1,4 @@
+require('dotenv').config
 const express=require("express");
 const bcrypt=require('bcrypt')
 //init express
@@ -49,14 +50,16 @@ nav:[
             title:'Logout'
         }
     ]}
-    const isAuth=(req,res,next)=>{
-        if(req.session.isAuth){
-            next()
-        }
-        else{
-            res.redirect("/signup")
-        }
-    }
+
+const {isAuth,store}=require('./config/isAuth')
+    // const isAuth=(req,res,next)=>{
+    //     if(req.session.isAuth){
+    //         next()
+    //     }
+    //     else{
+    //         res.redirect("/signup")
+    //     }
+    // }
 const session=require('express-session')
 const booksRouter=require('./src/routes/booksRoutes')(data);
 const authorRouter=require('./src/routes/authorRoutes')(data);
@@ -64,14 +67,13 @@ const sighupRouter=require('./src/routes/signupRoutes');
 // const bookdata=require('./config/connection');
 // const authordata=require('./config/connection2');
 const db=require('./config/connection2');
-const req = require("express/lib/request");
 const mongoDBSession=require('connect-mongodb-session')(session)
 
-const store=new mongoDBSession({
-    uri:db.data,
-    collection:"mySession"
+// const store=new mongoDBSession({
+//     uri:db.data,
+//     collection:"mySession"
 
-})
+// })
 // const LogIn=require('./config/connection');
 // const data1=require('./config/connection');
 // let bookdata1=data1.bookdata;

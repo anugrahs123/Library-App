@@ -1,10 +1,17 @@
 const express=require('express');
 const router=express.Router(); 
 const BookData=require('./../../config/connection2')
+const session=require('express-session')
+const {isAuth,store}=require('./../../config/isAuth')
 const print=(data)=>{
 
-    
-router.get("/",(req,res)=>{
+  router.use(session({
+    secret:"key",
+    resave:false,
+    saveUninitialized:false,
+    store:store
+}))
+router.get("/",isAuth,(req,res)=>{
   BookData.authordata.find()
   .then((authors)=>{
     res.render("authors",{data,authors})

@@ -3,6 +3,8 @@ const req = require('express/lib/request');
 const router=express.Router();
 const db=require('./../../config/connection2');
 const booksHelper=require('./../helper/bookHelper');
+const session=require('express-session')
+const {isAuth,store}=require('./../../config/isAuth')
 // const data1=require('./../../config/connection');
 // let BookData=data1.bookdata;
 const print=(data)=>{
@@ -14,8 +16,13 @@ const print=(data)=>{
     //         res.redirect("/signup")
     //     }
     // }
-
-router.get("/",(req,res)=>{
+router.use(session({
+    secret:"key",
+    resave:false,
+    saveUninitialized:false,
+    store:store
+}))
+router.get("/",isAuth,(req,res)=>{
     db.bookdata.find()
     .then((books)=>{
         console.log("BK",books);
