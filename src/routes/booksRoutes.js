@@ -25,7 +25,7 @@ router.use(session({
 router.get("/",isAuth,(req,res)=>{
     db.bookdata.find()
     .then((books)=>{
-        console.log("BK",books);
+        // console.log("BK",books);
         db.authordata.find()
         .then((authors)=>{
 
@@ -68,9 +68,13 @@ router.get("/dlt/:id",(req,res)=>{
 })
 router.get("/edit/:id",(req,res)=>{
     id=req.params.id;
+    db.bookdata.findOne({_id:id}).then((value)=>{
+        console.log("value",value);
+
+        res.render("editbook",{id,value,data})
+    })
     
 
-    res.render("editbook",{id,data})
 })
 
 return router;

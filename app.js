@@ -1,6 +1,7 @@
 require('dotenv').config
 const express=require("express");
 const bcrypt=require('bcrypt')
+const jwt=require('jsonwebtoken')
 //init express
 const app=new express();
 const data={
@@ -90,7 +91,23 @@ app.use(session({
     store:store
 
 }))
-
+const generateToken=(user)=>{
+    return jwt.sign(user,"key",{expiresIn:'1m'})
+}
+const authenticateToken=(req,res,next)=>{
+    const authHeader=req.headers['authorization']
+    const token= authHeader && authHeader.split(' ')[1]
+    console.log("4",authHeader);
+    console.log("5",token);
+    if(token==null) return res.sendStatus(401) 
+    
+    jwt.verify(token,"key",(err,user)=>{
+        if(err) return res.sendStatus(403)
+        req.user=user
+        console.log("6",user);
+        next()
+    })
+}
 // app.METHOD(PATH,HANDLER); 
 app.set('view engine','ejs');
 app.set('views','./src/views')
@@ -126,6 +143,13 @@ app.post("/login/add",(req,res)=>{
                 if(data){
 
                     if(m===user[i].Email ){
+                        const user={user:m}
+                        console.log("user is",user);
+                        const accessToken=generateToken(user)
+                        console.log("accessToken is",accessToken);
+                        let head=req.header
+                       
+                        console.log("here it is",head);
                         req.session.isAuth=true
                         res.redirect('/books')
                         // res.json({message:"okay"})
@@ -133,7 +157,7 @@ app.post("/login/add",(req,res)=>{
                
                     else{
                         console.log("else");
-                      
+                        res.send('<script>alert("E-mail not Found")</script>')
                         // res.redirect('/login')
                         // res.json({message:"not okay"})
             
@@ -141,6 +165,7 @@ app.post("/login/add",(req,res)=>{
                 }
                 else{
                     console.log("else else");
+                    res.send('<script>alert("E-mail not Found")</script>')
                 }
 
             })
@@ -153,7 +178,9 @@ app.post("/login/add",(req,res)=>{
 
 });
 
-app.get("/addbook",isAuth,(req,res)=>{
+app.get("/addbook",authenticateToken,(req,res)=>{
+    let val=req.headers;
+    console.log("val",val);
     res.render("addbook",{data});
 
 });
@@ -188,12 +215,12 @@ app.post("/editbook/add",(req,res)=>{
     })
 
 });
-app.get("/addauthor",(req,res)=>{
+app.get("/addauthor",isAuth,(req,res)=>{
     res.render("addauthor",{data});
 
 });
 
-app.get("/addbook/add",(req,res)=>{
+app.get("/addbook/add",isAuth,(req,res)=>{
     let item={
         BookName:req.query.BookName,
         AuthorName:req.query.AuthorName,
@@ -227,5 +254,5 @@ app.post("/addbook/addauthor",(req,res)=>{
 //listen on a port
 
 app.listen(8000,()=>{
-    console.log(`server starting at 8000`);
+    console.log(`server starting at http://localhost:8000`);
 });

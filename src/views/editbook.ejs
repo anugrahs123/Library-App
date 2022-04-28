@@ -97,23 +97,23 @@
             </div>
             <div class="mb-2">
               <label for="exampleBookName" class="form-label">Book Name</label>
-              <input type="text" class="form-control" id="exampleBookName" name="BookName" aria-describedby="emailHelp" required>
+              <input type="text" class="form-control" id="exampleBookName" name="BookName" value="<%=value.BookName%>" aria-describedby="emailHelp" required>
             </div>
             <div class="mb-3">
               <label for="exampleAuthorName" class="form-label">Author Name</label>
-              <input type="text" class="form-control" id="exampleAuthorName" name="AuthorName" required>
+              <input type="text" class="form-control" id="exampleAuthorName" value="<%=value.AuthorName%>" name="AuthorName" required>
             </div>
             <div class="mb-3">
                 <label for="exampleBookType" class="form-label">Book Type</label>
-                <input type="text" class="form-control" id="exampleBookType" name="BookType" required>
+                <input type="text" class="form-control" id="exampleBookType" value="<%=value.BookType%>" name="BookType" required>
               </div>
               <div class="mb-3">
                 <label for="exampleBookYear" class="form-label">Book Year</label>
-                <input type="number" class="form-control" id="exampleBookYear" name="BookYear" required>
+                <input type="number" class="form-control" id="exampleBookYear" value="<%=value.BookYear%>" name="BookYear" required>
               </div>
               <div class="mb-3">
                 <label for="exampleImage" class="form-label">Image</label>
-                <input type="file" class="form-control" id="exampleImage" name="Image" required>
+                <input type="file" class="form-control" id="exampleImage"  name="Image" required>
               </div>
             <br>
             <button type="submit" class="btn btn-primary">Submit</button>
