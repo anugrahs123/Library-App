@@ -73,11 +73,7 @@ const sighupRouter=require('./src/routes/signupRoutes');
 // const authordata=require('./config/connection2');
 const db=require('./config/connection2');
 
-// const store=new mongoDBSession({
-//     uri:db.data,
-//     collection:"mySession"
 
-// })
 // const LogIn=require('./config/connection');
 // const data1=require('./config/connection');
 // let bookdata1=data1.bookdata;
