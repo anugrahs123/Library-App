@@ -1,7 +1,12 @@
 require('dotenv').config
 const express=require("express");
 const bcrypt=require('bcrypt')
+const session=require('express-session')
+const mongoDBSession=require('connect-mongodb-session')(session)
 const jwt=require('jsonwebtoken')
+const passport=require('passport')
+const LocalStrategy=require('passport-local').Strategy
+const flash=require('express-flash')
 //init express
 const app=new express();
 const data={
@@ -61,14 +66,12 @@ const {isAuth,store}=require('./config/isAuth')
     //         res.redirect("/signup")
     //     }
     // }
-const session=require('express-session')
 const booksRouter=require('./src/routes/booksRoutes')(data);
 const authorRouter=require('./src/routes/authorRoutes')(data);
 const sighupRouter=require('./src/routes/signupRoutes');
 // const bookdata=require('./config/connection');
 // const authordata=require('./config/connection2');
 const db=require('./config/connection2');
-const mongoDBSession=require('connect-mongodb-session')(session)
 
 // const store=new mongoDBSession({
 //     uri:db.data,
@@ -91,6 +94,16 @@ app.use(session({
     store:store
 
 }))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(flash())
+
+//passport
+const intilizePassport=require('./config/passport')
+intilizePassport(passport,email=>db.Userdata.find(user=>user.email==email),id=>db.Userdata.find(user=>user.id==id))
+
+
+//JWT
 const generateToken=(user)=>{
     return jwt.sign(user,"key",{expiresIn:'1m'})
 }
@@ -129,6 +142,16 @@ app.get('/logout',(req,res)=>{
         res.redirect("/login");
     })
 })
+//passport
+// app.post("/login/add",passport.authenticate('local',{
+//     successRedirect:"/books",
+//     failureRedirect:"/login",
+//     failureFlash:true
+// }));
+
+//JWT & Session
+
+
 app.post("/login/add",(req,res)=>{
     let m=req.body.email;
     let n=req.body.password;

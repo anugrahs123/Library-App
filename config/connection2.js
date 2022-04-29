@@ -3,7 +3,10 @@ const mongoose=require("mongoose");
 const url="mongodb+srv://libraryapp:libraryapp@clusterlibrary.5fslb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 // mongoose.connect("mongodb://localhost:27017/LibraryApp");
 //mongoose.connect("mongodb+srv://libraryapp:libraryapp@clusterlibrary.5fslb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
-mongoose.connect(url);
+mongoose.connect(url,{
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+});
 const Schema=mongoose.Schema;
 
 
