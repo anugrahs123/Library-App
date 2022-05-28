@@ -10,6 +10,7 @@ const flash=require('express-flash')
 const http=require('http')
 //init express
 const app=new express();
+const port=process.env.PORT || 8000 
 const data={
 //     book:[
 //     {
@@ -283,6 +284,6 @@ app.post("/addbook/addauthor",(req,res)=>{
 
 //listen on a port
 
-// app.listen(8000,()=>{
-//     console.log(`server starting at http://localhost:8000`);
-// });
+app.listen(port,()=>{
+    console.log(`server starting at http://localhost:8000`);
+});
