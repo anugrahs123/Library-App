@@ -163,14 +163,19 @@ app.post("/login/add",(req,res)=>{
     db.Userdata.find()
     .then((user)=>{
         console.log(user);
-        for(let i=0;i<user.length;i++){
+       // for(let i=0;i<user.length;i++){
+           user.forEach(element => {
+               
+       
             console.log(n);
+            console.log("element",element);
             
-            console.log("oka",user[i].Password);
-            bcrypt.compare(n,user[i].Password,(err,data)=>{
+            console.log("oka",element.Password);
+            bcrypt.compare(n,element.Password,(err,data)=>{
+                if(err) throw err
                 if(data){
 
-                    if(m===user[i].Email ){
+                    if(m===element.Email ){
                         const user={user:m}
                         console.log("user is",user);
                         const accessToken=generateToken(user)
@@ -188,21 +193,24 @@ app.post("/login/add",(req,res)=>{
                     else{
                         console.log("else");
                         // res.send('<script>alert("E-mail not Found")</script>')
-                        // res.redirect('/login')
-                        // res.json({message:"not okay"})
+                      //res.redirect('/signup')
+                       //res.json({message:"not okay"})
             
                     }
                 }
-                // else{
-                //     console.log("else else");
-                //     res.send('<script>alert("E-mail not Found")</script>')
-                // }
+                else{
+                    console.log("else else");
+                   // res.send('<script>alert("E-mail not Found")</script>')
+                //   res.redirect('/signup')
+                 //  res.json({message:"invalid entry"})
+                 //  res.end();
+                }
 
             })
         // res.send('we');
         //console.log(e);
         console.log(req.body.email);
-    }
+    });
         
     })
 
