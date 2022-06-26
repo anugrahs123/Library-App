@@ -25,16 +25,16 @@
       </button>
     </div>
     <nav class="collapse navbar-collapse" role="navigation">
-      <%for(let i=0;i<data.nav.length;i++){%>
       <ul class="nav navbar-nav">
-        <li>
-          <a href="/<%=data.nav[i].link%>"><%=data.nav[i].title%></a>
-        </li>
-      </ul>
+        <%for(let i=0;i<data.nav.length;i++){%>
+          <li>
+            <a href="/<%=data.nav[i].link%>"><%=data.nav[i].title%></a>
+          </li>
       <%}%>
+      </ul>
       <ul class="nav navbar-right navbar-nav">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<i class="glyphicon glyphicon-search"></i></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
           <ul class="dropdown-menu" style="padding:12px;">
             <form class="form-inline">
               <button type="submit" class="btn btn-default pull-right"><i class="glyphicon glyphicon-search"></i></button><input type="text" class="form-control pull-left" placeholder="Search">
@@ -50,7 +50,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-7">
-        <h1>Books
+        <h1>Add-Author
           <p class="lead"></p>
         </h1>
       </div>
@@ -89,29 +89,28 @@
           <!-- rashidtk -->
           
           <!--/stories-->
-          <%for(let i=0;i<books.length;i++){%>
-          <div class="row">    
-            <br>
-            <div class="col-md-2 col-sm-3 text-center">
-              <a class="story-title" href="#"><img alt="" src="/uploads/<%=books[i].Image.data%>" style="width:100px;height:100px" class="img-circle"></a>
+          <form method="POST" action="/editauthor/add">
+            <div class="mb-2">
+              <label for="exampleBookName" class="form-label">Author ID</label>
+              <input type="text" class="form-control" id="exampleBookName" value="<%=id%>" name="BookID" aria-describedby="emailHelp" required>
             </div>
-            <div class="col-md-10 col-sm-9">
-              <h3><%=books[i].BookName%></h3>
-              <div class="row">
-                <div class="col-xs-9">
-                  <h4><span class="label label-default"><a href="#"><%=books[i].AuthorName%></a></span></h4><h4>
-                  <small style="font-family:courier,'new courier';" class="text-muted"><%=books[i].BookType%>   <br><a href="/books/<%=books[i]._id%>" class="text-muted">Read More</a></small>
-                  </h4>
-                  <h5><a style="color: red;" href="/books/dlt/<%=books[i]._id%>"> Delete</a>||<a style="color: blue;" href="/books/edit/<%=books[i]._id%>"> Edit</a></h5>
-
-                </div>
-                <div class="col-xs-3"></div>
+            <div class="mb-2">
+              <label for="exampleBookName" class="form-label">Author Name</label>
+              <input type="text" class="form-control" id="exampleBookName" name="AuthorName" aria-describedby="emailHelp" required>
+            </div>
+           
+            <div class="mb-3">
+                <label for="exampleBookType" class="form-label">Book Type</label>
+                <input type="text" class="form-control" id="exampleBookType" name="AuthorType" required>
               </div>
-              <br><br>
-            </div>
-          </div>
-          <%}%>
-          <hr>
+              
+              <div class="mb-3">
+                <label for="exampleImage" class="form-label">Image</label>
+                <input type="file" class="form-control" id="exampleImage" name="AuthorImage" required>
+              </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
        
           <!--/stories-->
           

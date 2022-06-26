@@ -13,6 +13,15 @@ const isAuth=(req,res,next)=>{
     }
 }
 
+const isAdmin=(req,res,next)=>{
+    if(req.session.isAdmin){
+        next()
+    }
+    else{
+        res.send("Unauthorised - LogIn with ADMIN credentials!!!")
+    }
+}
+
 const store=new mongoDBSession({
     uri:db.data,
     collection:"mySession"
@@ -20,4 +29,4 @@ const store=new mongoDBSession({
 })
 
 
-module.exports={isAuth,store}
+module.exports={isAuth,store,isAdmin}

@@ -4,7 +4,7 @@ const router=express.Router();
 const db=require('./../../config/connection2');
 const booksHelper=require('./../helper/bookHelper');
 const session=require('express-session')
-const {isAuth,store}=require('./../../config/isAuth')
+const {isAuth,store, isAdmin}=require('./../../config/isAuth')
 // const data1=require('./../../config/connection');
 // let BookData=data1.bookdata;
 const print=(data)=>{
@@ -22,7 +22,7 @@ router.use(session({
     saveUninitialized:false,
     store:store
 }))
-router.get("/",isAuth,(req,res)=>{
+router.get("/",isAuth ,(req,res)=>{
     db.bookdata.find()
     .then((books)=>{
         // console.log("BK",books);
@@ -59,7 +59,7 @@ router.get("/:id",(req,res)=>{
     })
 })
 
-router.get("/dlt/:id",(req,res)=>{
+router.get("/dlt/:id",isAdmin,(req,res)=>{
         id=req.params.id;
         db.bookdata.deleteOne({_id:id})
         .then((book)=>{
@@ -67,7 +67,7 @@ router.get("/dlt/:id",(req,res)=>{
         res.redirect("/books")
     })
 })
-router.get("/edit/:id",(req,res)=>{
+router.get("/edit/:id",isAdmin,(req,res)=>{
     id=req.params.id;
     db.bookdata.findOne({_id:id}).then((value)=>{
         console.log("value",value);

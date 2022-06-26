@@ -21,6 +21,8 @@ const upload=multer({
 }).single('Image')
 //init express
 const port=process.env.PORT || 8000 
+const admin='admin01@gmail.com'
+const Apassword="321"
 const data={
 //     book:[
 //     {
@@ -69,7 +71,7 @@ nav:[
         }
     ]}
 
-const {isAuth,store}=require('./config/isAuth')
+const {isAuth,store,isAdmin}=require('./config/isAuth')
     // const isAuth=(req,res,next)=>{
     //     if(req.session.isAuth){
     //         next()
@@ -109,7 +111,7 @@ app.use(flash())
 //passport
 const intilizePassport=require('./config/passport');
 const path = require('path');
-const { bookdata } = require('./config/connection2');
+const { bookdata, authordata } = require('./config/connection2');
 intilizePassport(passport,(email)=>{
     db.Userdata.find((user)=>{
         console.log("newwwwwwww",user);
@@ -172,6 +174,13 @@ app.get('/logout',(req,res)=>{
 app.post("/login/add",(req,res)=>{
     let m=req.body.email;
     let n=req.body.password;
+    console.log(m,n,admin,Apassword);
+    if(m==admin && n==Apassword){
+        req.session.isAdmin=true
+        req.session.isAuth=true
+        res.redirect('/books')
+    }
+    else{
     db.Userdata.find()
     .then((user)=>{
         console.log(user);
@@ -183,7 +192,7 @@ app.post("/login/add",(req,res)=>{
             console.log("element",element);
             
             console.log("oka",element.Password);
-            bcrypt.compare(n,element.Password,(err,data)=>{
+            bcrypt.compare(n,element.Password,async(err,data)=>{
                 if(err) throw err
                 if(data){
 
@@ -197,7 +206,7 @@ app.post("/login/add",(req,res)=>{
                        
                         // console.log("here it is",head);
                         // res.writeHead(200,{"new":"qwerty"})
-                        req.session.isAuth=true
+                        req.session.isAuth=await true
                         res.redirect('/books')
                         // res.json({message:"okay"})
                     }
@@ -225,17 +234,18 @@ app.post("/login/add",(req,res)=>{
     });
         
     })
+}
 
 });
 
-app.get("/addbook",(req,res)=>{
+app.get("/addbook",isAdmin,(req,res)=>{
     let val=req.headers;
     console.log("val",val);
    
     res.render("addbook",{data});
 
 });
-app.get("/editbook",isAuth,(req,res)=>{
+app.get("/editbook",isAdmin,(req,res)=>{
     res.render("editbook",{data});
 
 });
@@ -246,7 +256,7 @@ app.post("/editbook/add",(req,res)=>{
         AuthorName:req.body.AuthorName,
         BookType:req.body.BookType,
         BookYear:req.body.BookYear,
-        Image:req.body.Image
+       // Image:req.body.Image
     }
 
     db.bookdata.updateOne({_id:BookID},
@@ -262,6 +272,33 @@ app.post("/editbook/add",(req,res)=>{
         console.log(e);
         
         res.redirect('/books');
+        console.log(item);
+    })
+
+});
+app.post("/editauthor/add",(req,res)=>{
+    const BookID=req.body.BookID;
+    let item={
+        BookName:req.body.BookName,
+        AuthorName:req.body.AuthorName,
+        BookType:req.body.BookType,
+        BookYear:req.body.BookYear,
+       // Image:req.body.Image
+    }
+
+    db.authordata.updateOne({_id:BookID},
+        { $set:{
+            BookName:req.body.BookName,
+            AuthorName:req.body.AuthorName,
+            BookType:req.body.BookType,
+            BookYear:req.body.BookYear,
+            Image:req.body.Image
+            
+             }} )
+    .then((e)=>{
+        console.log(e);
+        
+        res.redirect('/authors');
         console.log(item);
     })
 
@@ -308,16 +345,35 @@ app.post("/addbook",isAuth,(req,res)=>{
 });
 
 app.post("/addbook/addauthor",(req,res)=>{
-    let item={
-        AuthorName:req.body.AuthorName,
-        AuthorType:req.body.AuthorType,
-        AuthorImage:req.body.AuthorImage
-    }
-    console.log(item);
-   var author= db.authordata(item);
-    author.save();
-    console.log(item);
-    res.redirect('/books')
+    upload(req,res,(err)=>{
+        if(err){
+            res.render('addbook',{msg:err});
+        }else{
+            let NewData=new authordata({
+                AuthorName:req.body.AuthorName,
+                AuthorType:req.body.AuthorType,
+                AuthorImage:{
+                    data:req.file.filename,
+                    contentType:'image/png'
+
+                }
+
+            })
+            NewData.save()
+            .then(()=>res.redirect('/authors')).catch((err)=>console.log(err))
+        }
+
+    })
+//     let item={
+//         AuthorName:req.body.AuthorName,
+//         AuthorType:req.body.AuthorType,
+//         AuthorImage:req.body.AuthorImage
+//     }
+//     console.log(item);
+//    var author= db.authordata(item);
+//     author.save();
+//     console.log(item);
+//     res.redirect('/authors')
 
 });
 

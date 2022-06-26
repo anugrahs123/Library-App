@@ -10,11 +10,14 @@ mongoose.connect(url,{
 const Schema=mongoose.Schema;
 
 
-const AuthorSchema=new Schema({
+const AuthorSchema=mongoose.Schema({
     
     AuthorName:String,
     AuthorType:String,
-    AuthorImage:String
+    AuthorImage:{
+        data:Buffer,
+        contentType:String
+    }
 
 });
 const BookSchema=mongoose.Schema({
