@@ -17,12 +17,16 @@ const AuthorSchema=new Schema({
     AuthorImage:String
 
 });
-const BookSchema=new Schema({
+const BookSchema=mongoose.Schema({
     BookName:String,
     AuthorName:String,
     BookType:String,
     BookYear:Number,
-    Image:String
+    Image:{
+        data:Buffer,
+        contentType:String
+
+    }
 
 });
 const UserSchema=new Schema({

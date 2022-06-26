@@ -89,7 +89,7 @@
           <!-- rashidtk -->
           
           <!--/stories-->
-          <form method="GET" action="/addbook/add">
+          <form method="post" action="/addbook"  enctype="multipart/form-data">
             <div class="mb-2">
               <label for="exampleBookName" class="form-label">Book Name</label>
               <input type="text" class="form-control" id="exampleBookName" name="BookName" aria-describedby="emailHelp" required>
@@ -106,9 +106,13 @@
                 <label for="exampleBookYear" class="form-label">Book Year</label>
                 <input type="number" class="form-control" id="exampleBookYear" name="BookYear" required>
               </div>
+              
+              <div class="mb-3">
+                <span><%= typeof msg != 'undefined' ? msg : '' %></span>
+              </div>
               <div class="mb-3">
                 <label for="exampleImage" class="form-label">Image</label>
-                <input type="file" class="form-control" id="exampleImage" name="Image" required>
+                <input type="file" class="form-control" id="exampleImage" name="Image" onchange="handleChange(event)" required>
               </div>
             <br>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -169,6 +173,14 @@
     </div>
   </div>
 </footer>
+<script>
+  const handleChange=(e)=>{
+
+    let img=document.getElementById("exampleImage").value
+    console.log("img",img);
+    console.log("e",e);
+  }
+</script>
 	<!-- script references -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>

@@ -1,5 +1,6 @@
 require('dotenv').config
 const express=require("express");
+const app=new express();
 const bcrypt=require('bcrypt')
 const session=require('express-session')
 const mongoDBSession=require('connect-mongodb-session')(session)
@@ -8,8 +9,17 @@ const passport=require('passport')
 const LocalStrategy=require('passport-local').Strategy
 const flash=require('express-flash')
 const http=require('http')
+const multer=require('multer')
+const Storage=multer.diskStorage({
+    destination:'./public/uploads',
+    filename:function(req,file,callback){
+        callback(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
+const upload=multer({
+    storage:Storage
+}).single('Image')
 //init express
-const app=new express();
 const port=process.env.PORT || 8000 
 const data={
 //     book:[
@@ -97,7 +107,9 @@ app.use(passport.session())
 app.use(flash())
 
 //passport
-const intilizePassport=require('./config/passport')
+const intilizePassport=require('./config/passport');
+const path = require('path');
+const { bookdata } = require('./config/connection2');
 intilizePassport(passport,(email)=>{
     db.Userdata.find((user)=>{
         console.log("newwwwwwww",user);
@@ -216,7 +228,7 @@ app.post("/login/add",(req,res)=>{
 
 });
 
-app.get("/addbook",authenticateToken,(req,res)=>{
+app.get("/addbook",(req,res)=>{
     let val=req.headers;
     console.log("val",val);
    
@@ -259,18 +271,39 @@ app.get("/addauthor",isAuth,(req,res)=>{
 
 });
 
-app.get("/addbook/add",isAuth,(req,res)=>{
-    let item={
-        BookName:req.query.BookName,
-        AuthorName:req.query.AuthorName,
-        BookType:req.query.BookType,
-        BookYear:req.query.BookYear,
-        Image:req.query.Image
-    }
-    console.log(item);
-   var book= db.bookdata(item);
-    book.save();
-    res.redirect('/books')
+app.post("/addbook",isAuth,(req,res)=>{
+    upload(req,res,(err)=>{
+        if(err){
+            res.render('addbook',{msg:err});
+        }else{
+            let NewData=new bookdata({
+                BookName:req.body.BookName,
+                AuthorName:req.body.AuthorName,
+                BookType:req.body.BookType,
+                BookYear:req.body.BookYear,
+                Image:{
+                    data:req.file.filename,
+                    contentType:'image/png'
+
+                }
+
+            })
+            NewData.save()
+            .then(()=>res.send("uploaded")).catch((err)=>console.log(err))
+        }
+
+    })
+//     let item={
+//         BookName:req.body.BookName,
+//         AuthorName:req.body.AuthorName,
+//         BookType:req.body.BookType,
+//         BookYear:req.body.BookYear,
+//         Image:req.body.Image
+//     }
+//     console.log(item);
+//    var book= db.bookdata(item);
+//     book.save();
+//     res.redirect('/books')
 
 });
 
